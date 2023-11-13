@@ -1,0 +1,49 @@
+# .gitpod.yml
+
+# Docker image to use for the Gitpod workspace
+image:
+  file: .gitpod.Dockerfile
+
+# List of tasks to run during the prebuild
+tasks:
+  - name: Install Docker and Docker Compose
+    command: |
+      sudo apt-get update
+      sudo apt-get install -y docker.io docker-compose
+
+  - name: Create docker-compose.yml file
+    command: |
+      echo 'version: "3.9"
+      services:
+        auto-gpt:
+          image: significantgravitas/auto-gpt
+          env_file:
+            - .env
+          profiles: ["exclude-from-up"]
+          volumes:
+            - ./auto_gpt_workspace:/app/auto_gpt_workspace
+            - ./data:/app/data
+            - ./logs:/app/logs' > docker-compose.yml
+
+  - name: Create and Configure .env file
+    command: |
+      echo 'OPENAI_API_KEY=<your_openai_api_key>
+      # Add other API keys or tokens for services you would like to use' > .env
+
+# List of tasks to run when the workspace starts
+init_tasks:
+  - name: Pull Latest Auto-GPT Image from Docker Hub
+    command: docker pull significantgravitas/auto-gpt
+
+  - name: Run AutoGPT with Docker Compose
+    command: docker compose run --rm auto-gpt
+
+# Ports to expose for previewing the application in the browser
+ports:
+  - port: 80
+    onOpen: open-preview
+
+# Specify VS Code extensions to install
+vscode:
+  extensions:
+    - dbaeumer.vscode-eslint
