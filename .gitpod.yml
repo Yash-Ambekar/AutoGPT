@@ -6,21 +6,13 @@ image:
 
 # List of tasks to run during the prebuild
 tasks:
-  - name: Install Docker and Docker Compose
-    init: |
-      sudo apt-get update
-      sudo apt-get install -y docker.io docker-compose
-
   - name: Create and Configure .env file
     init: |
-      echo 'OPENAI_API_KEY=<your_openai_api_key>
+      echo 'OPENAI_API_KEY=''
       # Add other API keys or tokens for services you would like to use' > .env
 
-  - name: Pull Latest Auto-GPT Image from Docker Hub
+  - name: Pull Latest Auto-GPT Image from Docker Hub and run it using Docker Compose
     init: docker pull significantgravitas/auto-gpt
-    # command: docker pull significantgravitas/auto-gpt
-
-  - name: Run AutoGPT with Docker Compose
     command: docker compose run --rm auto-gpt
 
 # Ports to expose for previewing the application in the browser
