@@ -13,7 +13,7 @@ tasks:
 
   - name: Pull Latest Auto-GPT Image from Docker Hub and run it using Docker Compose
     init: docker pull significantgravitas/auto-gpt
-    command: docker compose run --rm auto-gpt
+    command: docker-compose run --rm auto-gpt
 
 # Ports to expose for previewing the application in the browser
 ports:
